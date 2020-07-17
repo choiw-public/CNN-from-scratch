@@ -1,5 +1,5 @@
 import numpy as np
-from private import utils
+import utils
 
 
 class Cost:
@@ -46,7 +46,7 @@ class Softmax:
 
     def backward(self, gradient, *dummy):
         batch_num, feature_num = self.tensor_in.shape
-        softmax = self.value        
+        softmax = self.value
         a = np.zeros([batch_num, feature_num ** 2]).astype(np.float32)
         a[:, ::feature_num + 1] = softmax
         a = a.reshape([batch_num, feature_num, feature_num])
