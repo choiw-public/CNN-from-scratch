@@ -106,11 +106,9 @@ class FC:
 
         dJ_dw = np.sum(dlayer_dw @ np.expand_dims(gradient[0], 1), 0)
         self.weight, self._dJ_dw_accu = utils.apply_gradient(self.weight, self._dJ_dw_accu, dJ_dw, args)
-        self.weight -= args['weight_decay'] * self.weight
         if self.bias is not None:
             dJ_db = gradient[0].sum(0)
             self.bias, self._dJ_db_accu = utils.apply_gradient(self.bias, self._dJ_db_accu, dJ_db, args)
-            self.bias -= args['weight_decay'] * self.bias
             self.grads = [dJ_dlayer, dJ_dw, dJ_db]
         else:
             self.grads = [dJ_dlayer, dJ_dw]
@@ -156,12 +154,10 @@ class Convolution:
 
         # utils.apply_gradient
         self.weight, self._dJ_dw_accu = utils.apply_gradient(self.weight, self._dJ_dw_accu, dJ_dw, args)
-        self.weight -= args['weight_decay'] * self.weight
 
         if self.bias is not None:
             dJ_db = np.sum(gradient[0], (0, 1, 2))
             self.bias, self._dJ_db_accu = utils.apply_gradient(self.bias, self._dJ_db_accu, dJ_db, args)
-            self.bias -= args['weight_decay'] * self.bias
             self.grads = [dJ_dlayer, dJ_dw, dJ_db]
         else:
             self.grads = [dJ_dlayer, dJ_dw]

@@ -42,9 +42,9 @@ def get_window(tensor, h_range, w_range, size, stride):
 
 def apply_gradient(weight, accumulation, gradient, args):
     if args['optimizer'] == 'gradient_descent':
-        return weight - args['lr'] * gradient, None
+        return weight - args['lr'] * (gradient + args['weight_decay'] * weight), None
     elif args['optimizer'] == 'momentum':
-        accumulation = 0.9 * accumulation + gradient
-        return weight - args['lr'] * accumulation, accumulation
+        accumulation = 0.9 * accumulation - (gradient + args['weight_decay'] * weight)
+        return weight + args['lr'] * accumulation, accumulation
     else:
         raise ValueError('unexpected optimizer')
